@@ -7,6 +7,7 @@
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{tikz}
 \usepackage{fullpage}
 \usepackage{color}
 \usepackage{parskip}
@@ -123,8 +124,6 @@ between the initial $M$ and the $U's$, and you can't get an odd number of sequen
 as if the rules impose strict limits on the type of strings you can get, so it seems if you can't meet the strings you want to see (that'd lead to MU)
 to the strings you are actually able to transform into, then there is no path to the solution.
 
-
-
 \subsubsection{Questions}
 
 HW 1 Question: One way the $MU$ puzzle seems impossible is by going backwards, where to get $MU$ it seems like 
@@ -133,7 +132,183 @@ the limited rules.  But would this way of looking at it make sense for a larger 
 I can imagine a similar puzzle with more rules where getting $MIII$ or $MUUU$ is still 
 impossible, but other rules allow you to get to $MU$ without using the $XIIIY \;\Rightarrow\; XUY$ or $XUUY \;\Rightarrow\; XY$ rules.
 
-\subsection{Week 1}
+\subsection{Week 2}
+
+\subsubsection{Homework}
+
+\paragraph{Part 1}
+
+Draw a picture for each ARS. Determine if they are terminating, confluent, and whether they have unique normal forms.
+
+\subparagraph{ARS 1}
+\[
+A = \{\}, \quad R = \{\}
+\]
+
+\textbf{Picture:} none
+
+\begin{itemize}
+    \item Terminating? Yes
+    \item Confluent? Yes
+    \item Unique normal forms? Yes
+\end{itemize}
+
+\subparagraph{ARS 2}
+\[
+A = \{a\}, \quad R = \{\}
+\]
+
+\textbf{Picture:}
+\begin{tikzpicture}[baseline=(a.base)]
+\node (a) {a};
+\end{tikzpicture}
+
+\begin{itemize}
+    \item Terminating? Yes
+    \item Confluent? Yes
+    \item Unique normal forms? Yes
+\end{itemize}
+
+\subparagraph{ARS 3}
+\[
+A = \{a\}, \quad R = \{(a,a)\}
+\]
+
+\textbf{Picture:}
+\begin{tikzpicture}[baseline=(a.base)]
+\node (a) {a};
+\draw (a) edge[loop right] (a);
+\end{tikzpicture}
+
+\begin{itemize}
+    \item Terminating? No
+    \item Confluent? Yes
+    \item Unique normal forms? No, because a looping final element can't really be final. 
+\end{itemize}
+
+\subparagraph{ARS 4}
+\[
+A = \{a,b,c\}, \quad R = \{(a,b),(a,c)\}
+\]
+
+\textbf{Picture:}
+\begin{tikzpicture}[baseline=(a.base)]
+\node (a) {a};
+\node (b) [below left of=a] {b};
+\node (c) [below right of=a] {c};
+\draw (a) -> (b);
+\draw (a) -> (c);
+\end{tikzpicture}
+
+\begin{itemize}
+    \item Terminating? Yes
+    \item Confluent? No, $a$ leads to two different elements which don't converge
+    \item Unique normal forms? No, as the elements don't converge back to the same final element.
+\end{itemize}
+
+\subparagraph{ARS 5}
+\[
+A = \{a,b\}, \quad R = \{(a,a),(a,b)\}
+\]
+
+\textbf{Picture:}
+\begin{tikzpicture}[baseline=(a.base)]
+\node (a) {a};
+\node (b) [right of=a] {b};
+\draw (a) edge[loop above] (a);
+\draw (a) -> (b);
+\end{tikzpicture}
+
+\begin{itemize}
+    \item Terminating? No, $a$ can be looped upon indefinitely.
+    \item Confluent? Yes, because $a$ has to end at $b$ if ends at all.
+    \item Unique normal forms? Yes
+\end{itemize}
+
+\subparagraph{ARS 6}
+\[
+A = \{a,b,c\}, \quad R = \{(a,b),(b,b),(a,c)\}
+\]
+
+\textbf{Picture:}
+\begin{tikzpicture}[baseline=(a.base)]
+\node (a) {a};
+\node (b) [below left of=a] {b};
+\node (c) [below right of=a] {c};
+\draw (a) -> (b);
+\draw (a) -> (c);
+\draw (b) edge[loop left] (b);
+\end{tikzpicture}
+
+\begin{itemize}
+    \item Terminating? No, has a loop.
+    \item Confluent? No
+    \item Unique normal forms? No, loop makes $b$ irreducible 
+\end{itemize}
+
+\subparagraph{ARS 7}
+\[
+A = \{a,b,c\}, \quad R = \{(a,b),(b,b),(a,c),(c,c)\}
+\]
+
+\textbf{Picture:}
+\begin{tikzpicture}[baseline=(a.base)]
+\node (a) {a};
+\node (b) [below left of=a] {b};
+\node (c) [below right of=a] {c};
+\draw (a) -> (b);
+\draw (a) -> (c);
+\draw (b) edge[loop left] (b);
+\draw (c) edge[loop right] (c);
+\end{tikzpicture}
+
+\begin{itemize}
+    \item Terminating? No, has loops.
+    \item Confluent? No
+    \item Unique normal forms? No, loops make $b$ and $c$ irreducible
+\end{itemize}
+
+\paragraph{Part 2}
+
+Find an example of an ARS for each of the possible 8 combinations.
+
+Format: True or false (T or F) for (Confluent, Terminates, UNF)
+
+\begin{enumerate}
+    \item \textbf{(T, T, T)} 
+    Example: ARS \#2
+
+    \item \textbf{(T, T, F)} 
+    Example: impossible. \\
+    Reason: if ARS is fully reducible and terminates, there must be multiple elements that converge into one element. Therefore, this ARS won't have more than 1 normal form, despite 3 elements, hence it doesn’t have unique normal forms.
+
+    \item \textbf{(T, F, T)} 
+    Example: ARS \#5
+
+    \item \textbf{(T, F, F)} 
+    Example: ARS \#3
+
+    \item \textbf{(F, T, T)} 
+    Example: impossible. 
+    Reason: ARS is terminating and has unique normal forms, which implies confluence towards one element, which 
+    is supposed to be false, so impossible.
+
+    \item \textbf{(F, T, F)} 
+    Example: ARS \#4
+
+    \item \textbf{(F, F, T)} 
+    Example: impossible. 
+    Reason: If an ARS has unique normal forms, then it implies multiple elements confluencing to one element, which is
+    false here, so impossible.
+
+    \item \textbf{(F, F, F)} 
+    Example: ARS \#6, ARS \#7
+\end{enumerate}
+
+\subsubsection{Questions}
+
+HW 2 Question: So it seems like an ARS with unique normal forms should always reach the last element unless there's a non-terminating relation somewhere in the ARS. 
+Is this true? if so, are there other uses for tracking terminability in ARS's?
 
 \section{Essay}
 
